@@ -1,86 +1,85 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+import Header from '../Components/Header'
+import Banner from '../Components/Banner'
+import SmallCard from '../Components/SmallCard'
+import MediumCard from '../Components/MediumCard'
+import LargeCard from '../Components/LargeCard'
+import Footer from '../Components/Footer'
 
-const Home: NextPage = () => {
+
+
+
+
+
+const Home: NextPage = ({exploreData, cardsData}) => {
+  console.log(exploreData);
+  console.log(cardsData)
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="">
       <Head>
-        <title>Create Next App</title>
+        <title>A2NB</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+      {/* Header */}
+      <Header/> 
+      {/* Banner */}
+      <Banner/>
+      {/* Explore (API) */}
+      <main className='max-w-7xl mx-auto px-8 sm:px-16 '>
+      <section className='pt-5'>
+        <h2 className='text-4xl font-semibold pb-5'>Explore Nearby</h2>
+        {/* Getting Cards from server */}
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 '>
+        {
+          exploreData.map((item)=>(
+            // Card
+            <SmallCard key={item.img} location={item.location} dist={item.distance} img={item.img} />
+          ))
+        }
         </div>
-      </main>
+  
+      </section>
+      <section>
+      <h2 className='text-4xl font-semibold pb-5 mt-7'>Live Anywhere</h2>
+          <div className='flex items-center space-x-3 overflow-x-scroll
+           overflow-y-hidden scrollbar-hide p-3 -ml-3 '>
+            {
+              cardsData.map((res)=>(
+                <MediumCard key={res.img} img={res.img} title={res.title } />
+              ))
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
+            }
+          </div>
+      </section>
+        <LargeCard img='https://links.papareact.com/4cj'
+          title='The Greatest Outdoors'
+          buttonText='Get Inspired'
+          description='Wishlists curated by Airbnb'
+
+        />
+      </main>    
+      <Footer/>  
     </div>
   )
 }
+// rendering data
+export async function getStaticProps(){
+  const exploreData = await fetch('https://links.papareact.com/pyp')
+  .then(item=>(
+    item?.json()
+  ))
+  const cardsData = await fetch('https://links.papareact.com/zp1')
+  .then(item=>(
+    item?.json()
+  ))
+  return{
+    props:{
+      exploreData,cardsData
+    }
+  }
+
+}
+
 
 export default Home

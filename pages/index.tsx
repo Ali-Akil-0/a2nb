@@ -8,6 +8,22 @@ import LargeCard from '../Components/LargeCard'
 import Footer from '../Components/Footer'
 
 
+export async function getStaticProps(){
+  const exploreData = await fetch('https://links.papareact.com/pyp')
+  .then(item=>(
+    item?.json()
+  ))
+  const cardsData = await fetch('https://links.papareact.com/zp1')
+  .then(item=>(
+    item?.json()
+  ))
+  return{
+    props:{
+      exploreData,cardsData
+    }
+  }
+
+}
 
 
 
@@ -26,7 +42,7 @@ const Home: NextPage = ({exploreData, cardsData}) => {
       {/* Banner */}
       <Banner/>
       {/* Explore (API) */}
-      <main className='max-w-7xl mx-auto px-8 sm:px-16 '>
+      <main className='max-w-7xl mx-auto px-8 sm:px-16 shadow-lg '>
       <section className='pt-5'>
         <h2 className='text-4xl font-semibold pb-5'>Explore Nearby</h2>
         {/* Getting Cards from server */}
@@ -38,7 +54,6 @@ const Home: NextPage = ({exploreData, cardsData}) => {
           ))
         }
         </div>
-  
       </section>
       <section>
       <h2 className='text-4xl font-semibold pb-5 mt-7'>Live Anywhere</h2>
@@ -63,23 +78,8 @@ const Home: NextPage = ({exploreData, cardsData}) => {
     </div>
   )
 }
-// rendering data
-export async function getStaticProps(){
-  const exploreData = await fetch('https://links.papareact.com/pyp')
-  .then(item=>(
-    item?.json()
-  ))
-  const cardsData = await fetch('https://links.papareact.com/zp1')
-  .then(item=>(
-    item?.json()
-  ))
-  return{
-    props:{
-      exploreData,cardsData
-    }
-  }
 
-}
+// rendering data
 
 
 export default Home

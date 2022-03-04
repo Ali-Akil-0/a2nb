@@ -4,6 +4,7 @@ import { useRouter } from 'next/dist/client/router'
 import { format } from 'date-fns'
 import InfoCard from '../Components/InfoCard'
 import Image from 'next/image'
+import Map2 from '../Components/Map2'
 
 const Search = ({ searchResults }) => {
   const router = useRouter()
@@ -44,6 +45,9 @@ const Search = ({ searchResults }) => {
               </>
             ))}
           </div>
+        </section>
+        <section className="hidden lg:inline-flex xl:min-w-[600px]">
+          <Map2 searchResults={searchResults} />
         </section>
       </main>
       <Footer />
